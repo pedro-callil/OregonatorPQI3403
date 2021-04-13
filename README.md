@@ -13,7 +13,10 @@ Autores
 -------
 
 André Ferreira <afs.souza@usp.br>
+
 Giovani Vicentim <giovanialves@usp.br>
+
 Luiz Amorim <l.henrique@usp.br>
+
 Pedro Callil <pedrocallil@usp.br>
 
