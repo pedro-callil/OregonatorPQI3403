@@ -1,5 +1,8 @@
 # include "definitions_and_headers.h"
 
+/* This function prints a small manual. There should be a fancier
+ * way to do this, but here we are.
+ */
 void print_usage ( void ) {
 
 	printf ( "Usage: OregonatorSolve [OPTIONS]\n" );

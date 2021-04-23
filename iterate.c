@@ -8,12 +8,6 @@ void differential ( double A, double B, double P, double X, double Y,
 		double Z, double k1, double k2, double k3, double k4,
 		double k5, double f, double *dXdt, double *dYdt, double *dZdt) {
 
-	/*double alpha = 6.666667;
-	double beta = 13.33333;
-	double gamma = 1;
-	double delta = 1;
-	*dXdt = alpha*X - beta*X*Y;
-	*dYdt = delta*X*Y - gamma*Y;*/
 	*dXdt = k1*A*Y - k2*X*Y + k3*A*X - 2*k4*X*X;
 	*dYdt = -k1*A*Y - k2*X*Y + 0.5*f*k5*B*Z;
 	*dZdt = 2*k3*A*X - k5*B*Z;

@@ -8,16 +8,22 @@ int main ( int argc, char **argv ) {
 	char logfilename[MAX_FILENAME_SIZE];
 	int iteration, interval, state_index, centers_used;
 	unsigned long long number_of_steps;
+		/* that's the punishment fit to the crime of using */
+		/* an explicit RK method to solve a stiff ODE. */
 
 	getargs ( argc, argv, &data, &interval, filename, logfilename );
+		/* we get the command line arguments */
 
 	srand ((unsigned int)time(NULL));
+		/* initializing the random numbers */
 
 	erase_previous_file ( filename, logfilename );
+		/* avoid simply appending the new
+		 * results to eventual old ones */
 
 	if ( data.simple == FALSE ) {
 		initialize ( &snapshots, data );
-		centers_used = 0;
+		centers_used = 0; /* no centers initially; all centers asynchronous. */
 		number_of_steps = (int) ((double) data.time_to_simulate/data.h);
 		for ( iteration = 0; iteration < number_of_steps; iteration++ ) {
 			if ( iteration % interval == 0 ) {
@@ -50,6 +56,7 @@ int main ( int argc, char **argv ) {
 	}
 
 	log_info ( snapshots, data, TRUE, logfilename, filename, interval );
+		/* warn simulation has ended */
 
 
 	return 0;

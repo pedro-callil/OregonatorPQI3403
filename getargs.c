@@ -1,5 +1,8 @@
 # include "definitions_and_headers.h"
 
+/* This function reads the arguments specified by the user and stores
+ * it for future system initialization and iteration.
+*/
 void getargs ( int number_of_args, char **the_args,
 	info *data, int *interval, char *filename, char *logfilename ) {
 
@@ -7,12 +10,12 @@ void getargs ( int number_of_args, char **the_args,
 
 	if ( number_of_args < 2 ) {
 		printf ( "For help, OregonatorSolve -h\n" );
-		exit (32);
+		exit (32); /* without arguments specified, halt. */
 	}
 
 	*interval = 300;
 	strcpy (filename, "simulation_results.csv");
-	strcpy (logfilename, "simulation_logs.csv");
+	strcpy (logfilename, "simulation_results.log");
 
 	data->simple = FALSE;
 	data->verbose = TRUE;
@@ -39,6 +42,7 @@ void getargs ( int number_of_args, char **the_args,
 	data->conc_X_in_drop = 9.911e-6;
 	data->conc_Y_in_drop = 3.732e-9;
 	data->conc_Z_in_drop = 5.968e-5;
+	/* default values */
 
 	while ((opt = getopt (number_of_args, the_args,
 		":hs:N:T:t:d:Da:b:A:B:P:X:Y:Z:f:i:j:k:l:L:m:I:x:y:z:H:S:Uq")) != -1) {
@@ -88,6 +92,7 @@ void getargs ( int number_of_args, char **the_args,
 				data->k_3 *= (data->conc_H_plus)/0.8;
 				data->k_4 *= (data->conc_H_plus)/0.8;
 				break;
+				/* change ki's if pH informed */
 			case 'A':
 				data->A_difus = strtod (optarg, NULL);
 				break;

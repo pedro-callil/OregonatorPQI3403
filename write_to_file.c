@@ -1,5 +1,9 @@
 # include "definitions_and_headers.h"
 
+/* This function is responsible for erasing any eventual previous
+ * files with the same name as the ones that shall be used to
+ * store the simulation results.
+ */
 void erase_previous_file (char *filename, char *logfilename) {
 
 	FILE *simulation_results;
@@ -13,7 +17,9 @@ void erase_previous_file (char *filename, char *logfilename) {
 
 }
 
-
+/* This function writes the concentrations of the components X, Y and Z
+ * to the file in which the results shall be stored.
+ */
 void write_to_file ( workspace snapshot, info data, char *filename ) {
 
 	int i, j, size;
@@ -61,6 +67,9 @@ void write_to_file ( workspace snapshot, info data, char *filename ) {
 	fclose(simulation_results);
 }
 
+/* Similar to the function above, but if we want to store the results obtaining
+ * for a well-mixed system.
+ */
 void write_to_file_simple ( workspace snapshot, info data, char *filename ) {
 
 	int i, j, size;
@@ -85,6 +94,8 @@ void write_to_file_simple ( workspace snapshot, info data, char *filename ) {
 	fclose(simulation_results);
 }
 
+/* Log simulation status and information.
+ */
 void log_info ( workspace snapshots, info data, int is_final,
 		char *logfilename, char *filename, int interval ) {
 

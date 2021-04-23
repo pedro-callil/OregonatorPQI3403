@@ -33,12 +33,16 @@ typedef struct {
 
 typedef struct {
 	cell **cells;
-} state;
+} state; /* the state of the system at some point is defined by *
+	  * the concentration of each component in each cell. */
 
 typedef struct {
 	state states[WORKSPACE_SIZE];
 	double time;
-} workspace;
+} workspace; /* not in use, currently; could be useful if
+	      * we wanted to use multi-step methods for
+	      * solving the ODE.
+	      */
 
 typedef struct {
 	int mesh_size;
@@ -67,7 +71,7 @@ typedef struct {
 	double k_3;
 	double k_4;
 	double k_5;
-} info;
+} info; /* all info needed to initialize the system. */
 
 extern void getargs ( int number_of_args, char *the_args[],
 		info *data, int *interval, char *filename, char *logfilename );
