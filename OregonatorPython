@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 
 import argparse
+from matplotlib import pyplot as plt
 from scipy.integrate import solve_ivp
 
 class data_struct ():
@@ -15,6 +16,10 @@ class data_struct ():
         self.B = B
 
 def differential (t, y, data):
+    """
+    This function receives the data for the simulation, the time and the
+    current state of the system, and returns the rates of variation.
+    """
     X = y[0]
     Y = y[1]
     Z = y[2]
@@ -32,6 +37,10 @@ def differential (t, y, data):
     return [dXdt, dYdt, dZdt]
 
 def get_cmd_line_args (args):
+    """
+    This function reads command-line arguments and stores them in an instance
+    of the class 'data', that works as a struct would, in C.
+    """
     data = data_struct(1.28, 2.4e6, 33.6, 2400, 1, 1, 0.06, 0.02)
     if args.conc_a is not None:
         data.A = args.conc_a
@@ -52,15 +61,34 @@ def get_cmd_line_args (args):
     return data
 
 def main (args):
+    """
+    Main function, solves the ODE and prints the results, storing them
+    in plots or tables according to user-provided options.
+    """
     data = get_cmd_line_args(args)
     solution = solve_ivp( differential, (0,1000),
             [3e-6, 3e-6, 300e-6], method='BDF', args=[data],
             rtol=1e-6, atol=1e-12, max_step=0.3)
     t = solution.t
     y = solution.y
-    print('t,x,y,z')
-    for i in range(len(t)):
-        print('{0},{1},{2},{3}'.format(t[i],y[0][i],y[1][i],y[2][i]))
+    if args.storage is not None:
+        the_file = open(args.storage, "w")
+        for i in range(len(t)):
+            the_file.write('{0},{1},{2},{3}\n'.format(t[i],y[0][i],y[1][i],y[2][i]))
+    elif args.quiet is not True:
+        print('t,x,y,z')
+        for i in range(len(t)):
+            print('{0},{1},{2},{3}'.format(t[i],y[0][i],y[1][i],y[2][i]))
+    if args.image is not None:
+        plt.plot(t, y[0], label="[X]")
+        plt.plot(t, y[1], label="[Y]")
+        plt.plot(t, y[2], label="[Z]")
+        plt.legend()
+        plt.yscale("log")
+        plt.xlabel("Time [s]")
+        plt.ylabel("Conc. [M]")
+        plt.title("ODE solution")
+        plt.savefig(args.image)
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
@@ -72,6 +100,9 @@ if __name__=="__main__":
     parser.add_argument("-k", "--k3", type=float, help="<k3>")
     parser.add_argument("-l", "--k4", type=float, help="<k4>")
     parser.add_argument("-m", "--kc", type=float, help="<kc>")
+    parser.add_argument("-s", "--storage", type=str, help="file in which the results shall be stored")
+    parser.add_argument("-p", "--image", type=str, help="file in which the results shall be ploted")
+    parser.add_argument("-q", "--quiet", action='store_true')
     args = parser.parse_args()
     main(args)
 
